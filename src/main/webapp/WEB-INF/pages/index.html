@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <style>
+        .form-wrapper{
+            width: 300px;
+            height: 100px;
+            margin: 200px auto;
+        }
+        .form-wrapper form button{
+            margin-left: 200px;
+            margin-top: 20px;
+        }
+        .form-wrapper .input-wrapper{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="form-wrapper">
+    <!-- @{/auth} 解析后：/demo/auth -->
+    <form th:action="@{/auth}" method="post">
+        <!-- 传递 method 请求参数，目的是为了让当前请求调用 AuthServlet 中的 login() 方法 -->
+        <input type="hidden" name="method" value="login"/>
+
+        <!-- th:text 解析表达式后会替换标签体 -->
+        <!-- ${attrName} 从请求域获取属性名为 attrName 的属性值 -->
+        <p th:text="${message}"></p>
+        <p th:text="${systemMessage}"></p>
+
+        <div class="input-wrapper">账号：<input type="text" name="loginAccount"/></div>
+        <div class="input-wrapper">密码：<input type="password" name="loginPassword"></div>
+        <button type="submit">进宫</button>
+    </form>
+</div>
+</body>
+</html>

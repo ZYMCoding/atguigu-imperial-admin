@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5">
+
+    <!-- 登录过滤器，过滤work相关请求，放在事务管理之前，若登陆失败，则直接跳转，不需要事务管理 -->
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.atguigu.maven.court.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/work</url-pattern>
+    </filter-mapping>
+
+    <!-- 拦截所有请求，进行事务管理，使每一个请求共用一个连接 -->
+    <filter>
+        <filter-name>txFilter</filter-name>
+        <filter-class>com.atguigu.maven.court.filter.TransactionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>txFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 配置Thymeleaf的前后缀 -->
+    <context-param>
+        <param-name>view-prefix</param-name>
+        <param-value>/WEB-INF/pages/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view-suffix</param-name>
+        <param-value>.html</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>portalServlet</servlet-name>
+        <servlet-class>com.atguigu.maven.court.servlet.module.PortalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>portalServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>authServlet</servlet-name>
+        <servlet-class>com.atguigu.maven.court.servlet.module.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>authServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>workServlet</servlet-name>
+        <servlet-class>com.atguigu.maven.court.servlet.module.WorkServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>workServlet</servlet-name>
+        <url-pattern>/work</url-pattern>
+    </servlet-mapping>
+</web-app>

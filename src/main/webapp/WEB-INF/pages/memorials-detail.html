@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>奏折详情</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 30px auto;
+        }
+
+        table th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        div {
+            text-align: right;
+        }
+
+        .login-info{
+            width: 800px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            margin: 50px auto;
+            font-size: 30px;
+            color: #eec93a;
+        }
+        .log-out{
+            width: 800px;
+            height: 20px;
+            margin: 0 auto;
+        }
+        .reply-area{
+            /*border: 2px black solid;*/
+            width: 1000px;
+            margin: 0 auto;
+        }
+        .reply-area textarea{
+            /*border: 2px black solid;*/
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 500px;
+            height: 150px;
+        }
+        .reply-area button{
+            display: block;
+            margin: 10px auto;
+        }
+        .return-to-list{
+            /*border: 2px black solid;*/
+            width: 700px;
+            text-align: left;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<!-- 登录信息部分 -->
+<div class="login-info">
+    <span th:if="${session.loginInfo.emp_position == 'emperor'}">恭请皇上圣安</span>
+    <span th:if="${session.loginInfo.emp_position == 'minister'}">给<span th:text="${session.loginInfo.empName}">XXX</span>大人请安</span>
+</div>
+<div class="log-out">
+    <a th:href="@{/auth?method=logout}">退朝</a>
+</div>
+
+<!-- 奏折部分 -->
+<table>
+    <tr>
+        <td>奏折标题</td>
+        <td th:text="${memorials.memorialsTitle}"></td>
+    </tr>
+    <tr>
+        <td>上疏大臣</td>
+        <td th:text="${memorials.memorialsEmpName}"></td>
+    </tr>
+    <tr>
+        <td>上疏时间</td>
+        <td th:text="${memorials.memorialsCreateTime}"></td>
+    </tr>
+    <tr>
+        <td>奏折内容</td>
+        <td th:text="${memorials.memorialsContent}"></td>
+    </tr>
+    <tr th:if="${memorials.memorialsStatus == 2}">
+        <td>批复时间</td>
+        <td th:text="${memorials.feedbackTime}"></td>
+    </tr>
+    <tr th:if="${memorials.memorialsStatus == 2}">
+        <td>批复内容</td>
+        <td th:text="${memorials.feedbackContent}"></td>
+    </tr>
+</table>
+
+<div class="reply-area" th:if="${memorials.memorialsStatus != 2}">
+    <form th:action="@{/work}" method="post">
+        <!-- method为feedback -->
+        <input type="hidden" name="method" value="feedBack" />
+        <!-- 提交时后端可以获得memorialsId -->
+        <input type="hidden" name="memorialsId" th:value="${memorials.memorialsId}"/>
+        <textarea name="feedbackContent"></textarea>
+        <button type="submit">御批</button>
+    </form>
+</div>
+<div class="return-to-list">
+    <a th:href="@{/work?method=showMemorialsDigestList}">返回列表</a>
+</div>
+</body>
+</html>
