@@ -1,4 +1,4 @@
 # atguigu-imperial-admin
-尚硅谷Maven教程中奏折管理系统demo，使用原生servlet和thymeleaf开发
+尚硅谷Maven教程中消息管理系统demo，使用原生servlet和thymeleaf开发
 
 需要在resources目录下建立jdbc.properties文件，提供数据库连接信息
